@@ -26,8 +26,17 @@ end
 % M should be a factor
 % Remember to renormalize the entries of M!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+joint = ComputeJointDistribution(F);
 
-M = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
+reduced_joint = ObserveEvidence(joint, E);
+
+var_to_margin = setdiff(reduced_joint.var, V);
+m_factor = FactorMarginalization(reduced_joint, var_to_margin);
+
+M = m_factor;
+M.val = M.val / sum(M.val);
+
+% M = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
